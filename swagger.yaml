@@ -1,0 +1,118 @@
+openapi: 3.0.0
+servers:
+
+  - description: Assignment App
+    url: http://localhost:5000/
+info:
+  description: This is an assignment project
+  version: "1.0.0"
+  title: Simple CRUD API
+  contact:
+    email: assignment@assignment.com
+  
+paths:
+  /entry/list:
+    get:
+      tags:
+        - entry
+      summary: searches entry
+      operationId: view.get
+      description: |
+        By passing in the appropriate options, you can search for
+        available entry/entries in the system
+
+      responses:
+        '200':
+          description: search results matching criteria
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/entryItem'
+        '400':
+          description: bad input parameter
+          
+  /entry/create:
+    post:
+      tags:
+        - entry
+      summary: adds an entry
+      operationId: view.post
+      description: Adds an entry to the system
+      responses:
+        '201':
+          description: entry created
+        '400':
+          description: 'invalid input, object invalid'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entryItem'
+        description: entry to add
+        
+  /entry/update/{id}:
+    put:
+      operationId: view.put
+      tags:
+        - entry
+      summary: Update an entry in the entries list
+      description: Update a entry in the entries list
+      parameters:
+        - name: id
+          in: path
+          description: Entry ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            
+      responses:
+        200:
+          description: Successfully updated a entry in entries list
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/entryItem'
+        description: update entry
+
+  /entry/delete/{id}:
+    delete:
+      operationId: view.delete
+      tags:
+        - entry
+      summary: Delete an entry in the entries list
+      description: Delete a entry in the entries list
+      parameters:
+        - name: id
+          in: path
+          description: Entry ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+            
+      responses:
+        200:
+          description: Successfully deleted an entry in entries list
+        '400':
+          description: bad input parameter
+      
+components:
+  schemas:
+    entryItem:
+      type: object
+
+      properties:
+        checked:
+          type: boolean
+        name:
+          type: string
+        type:
+          type: string
+        age: 
+          type: integer
+        description:
+          type: string
